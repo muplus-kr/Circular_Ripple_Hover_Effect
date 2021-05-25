@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>sample</title>
+        <!-- css -->
+        <link rel="stylesheet" href="./css/ui.reset.css" type="text/css" />
+        <link rel="stylesheet" href="./css/ui.common.css" type="text/css" />
+        <!-- javascript -->
+        <script src="./js/jquery-1.12.3.js"></script>
+        <script src="./js/ui.common.js"></script>
+    </head>
+
+    <body>
+        <ul class="section">
+            <li>
+                <a href="#none" class="HOVER">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="#none" class="HOVER">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="#none" class="HOVER FLASH">
+                    <span></span>
+                </a>
+            </li>
+        </ul>
+
+        <script>
+            // IE 에서 foreach 사용
+            if (window.NodeList && !NodeList.prototype.forEach) {
+                NodeList.prototype.forEach = Array.prototype.forEach;
+            }
+
+            // 마우스 오버 애니메이션
+            var ANIMATEDCLASSNAME = "animateds"; // 흔들리는 효과
+            var ELEMENTS = document.querySelectorAll(".HOVER");
+            var ELEMENTS_SPAN = [];
+
+            ELEMENTS.forEach(function (element, index) {
+                var addAnimation = false;
+                // Elements that contain the "FLASH" class, add a listener to remove
+                // animation-class when the animation ends
+                if (element.classList.contains("FLASH")) {
+                    element.addEventListener("animationend", function (e) {
+                        element.classList.remove(ANIMATEDCLASSNAME);
+                    });
+                    addAnimation = true;
+                }
+
+                // If The span element for this element does not exist in the array, add it.
+                if (!ELEMENTS_SPAN[index]) ELEMENTS_SPAN[index] = element.querySelector("span");
+
+                element.addEventListener("mouseover", function (e) {
+                    ELEMENTS_SPAN[index].style.left = e.pageX - element.offsetLeft + "px";
+                    ELEMENTS_SPAN[index].style.top = e.pageY - element.offsetTop + "px";
+                    // Add an animation-class to animate via CSS.
+                    if (addAnimation) element.classList.add(ANIMATEDCLASSNAME);
+                });
+
+                element.addEventListener("mouseout", function (e) {
+                    ELEMENTS_SPAN[index].style.left = e.pageX - element.offsetLeft + "px";
+                    ELEMENTS_SPAN[index].style.top = e.pageY - element.offsetTop + "px";
+                });
+            });
+        </script>
+    </body>
+</html>
